@@ -19,8 +19,13 @@ type PriceRequest struct {
 
 func (r *PriceRequest) Values() url.Values {
 	values := url.Values{}
-	values.Add("sourceAmount", strconv.FormatFloat(r.SourceAmount, 'f', 2, 64))
-	values.Add("targetAmount", strconv.FormatFloat(r.TargetAmount, 'f', 2, 64))
+
+	if r.SourceAmount != 0 {
+		values.Add("sourceAmount", strconv.FormatFloat(r.SourceAmount, 'f', 2, 64))
+	}
+	if r.TargetAmount != 0 {
+		values.Add("targetAmount", strconv.FormatFloat(r.TargetAmount, 'f', 2, 64))
+	}
 	values.Add("sourceCurrency", r.SourceCurrency)
 	values.Add("targetCurrency", r.TargetCurrency)
 
