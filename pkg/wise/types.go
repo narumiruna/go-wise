@@ -85,3 +85,12 @@ func (p PriceResponse) GooglePayInBalanceOut() (*Price, error) {
 
 	return nil, fmt.Errorf("method not found")
 }
+func (p PriceResponse) DirectDebitInBalanceOut() (*Price, error) {
+	for _, price := range p {
+		if price.PayInMethod == "DIRECT_DEBIT" && price.PayOutMethod == "BALANCE" {
+			return &price, nil
+		}
+	}
+
+	return nil, fmt.Errorf("method not found")
+}
