@@ -67,13 +67,13 @@ type Price struct {
 	MidRate              float64          `json:"midRate"`
 	EcbRate              float64          `json:"ecbRate"`
 	EcbRateTimestamp     int              `json:"ecbRateTimestamp"`
-	EcbMarkupPercent     any              `json:"ecbMarkupPercent"`
+	EcbMarkupPercent     interface{}      `json:"ecbMarkupPercent"`
 	AdditionalFeeDetails TaxDetailsByType `json:"additionalFeeDetails"`
 }
 
 type TaxDetailsByType struct {
-	ReceiveInr       any `json:"receiveInr"`
-	TaxDetailsByType any `json:"taxDetailsByType"`
+	ReceiveInr       interface{} `json:"receiveInr"`
+	TaxDetailsByType interface{} `json:"taxDetailsByType"`
 }
 
 func (p PriceResponse) GooglePayInBalanceOut() (*Price, error) {
