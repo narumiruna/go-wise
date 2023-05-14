@@ -24,9 +24,10 @@ func (r *PriceRequest) Values() url.Values {
 	values.Add("sourceCurrency", r.SourceCurrency)
 	values.Add("targetCurrency", r.TargetCurrency)
 
-	if r.ProfileID != 0 {
-		values.Add("profileId", strconv.Itoa(r.ProfileID))
+	if r.ProfileID == 0 {
+		r.ProfileID = 16526615
 	}
+	values.Add("profileId", strconv.Itoa(r.ProfileID))
 
 	if r.ProfileCountry != "" {
 		values.Add("profileCountry", r.ProfileCountry)
