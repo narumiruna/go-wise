@@ -62,7 +62,7 @@ type Price struct {
 	MidRate              float64          `json:"midRate"`
 	EcbRate              float64          `json:"ecbRate"`
 	EcbRateTimestamp     int              `json:"ecbRateTimestamp"`
-	EcbMarkupPercent     string           `json:"ecbMarkupPercent"`
+	EcbMarkupPercent     any              `json:"ecbMarkupPercent"`
 	AdditionalFeeDetails TaxDetailsByType `json:"additionalFeeDetails"`
 }
 
