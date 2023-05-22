@@ -10,7 +10,6 @@ import (
 var sourceCurrencies = []string{"GBP", "EUR"}
 
 func main() {
-
 	for _, sourceCurrency := range sourceCurrencies {
 		client := wise.NewRestClient()
 		req := wise.PriceRequest{
