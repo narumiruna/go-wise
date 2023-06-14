@@ -76,32 +76,28 @@ type TaxDetailsByType struct {
 	TaxDetailsByType interface{} `json:"taxDetailsByType"`
 }
 
-func (p PriceResponse) GooglePayInBalanceOut() (*Price, error) {
+func (p PriceResponse) FindByPayMethod(payInMethod, payOutMethod string) (*Price, error) {
 	for _, price := range p {
-		if price.PayInMethod == "GOOGLE_PAY" && price.PayOutMethod == "BALANCE" {
+		if price.PayInMethod == payInMethod && price.PayOutMethod == payOutMethod {
 			return &price, nil
 		}
 	}
 
 	return nil, fmt.Errorf("method not found")
+}
+
+func (p PriceResponse) GooglePayInBalanceOut() (*Price, error) {
+	return p.FindByPayMethod("GOOGLE_PAY", "BALANCE")
 }
 
 func (p PriceResponse) DirectDebitInBalanceOut() (*Price, error) {
-	for _, price := range p {
-		if price.PayInMethod == "DIRECT_DEBIT" && price.PayOutMethod == "BALANCE" {
-			return &price, nil
-		}
-	}
-
-	return nil, fmt.Errorf("method not found")
+	return p.FindByPayMethod("DIRECT_DEBIT", "BALANCE")
 }
 
 func (p PriceResponse) BankTransferInBalanceOut() (*Price, error) {
-	for _, price := range p {
-		if price.PayInMethod == "BANK_TRANSFER" && price.PayOutMethod == "BALANCE" {
-			return &price, nil
-		}
-	}
+	return p.FindByPayMethod("BANK_TRANSFER", "BALANCE")
+}
 
-	return nil, fmt.Errorf("method not found")
+func (p PriceResponse) VISACreditInBalanceOut() (*Price, error) {
+	return p.FindByPayMethod("VISA_CREDIT", "BALANCE")
 }
