@@ -29,4 +29,16 @@ func main() {
 
 		fmt.Printf("%+v\n", data)
 	}
+
+	payment := wise.Payment{
+		SourceAmount:   795.94,
+		SourceCurrency: "GBP",
+		TargetAmount:   1000,
+		TargetCurrency: "USD",
+	}
+	cost, err := wise.NewCost(context.Background(), payment, "TWD")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%+v\n", cost)
 }
