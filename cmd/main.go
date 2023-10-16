@@ -2,38 +2,27 @@ package main
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/narumiruna/go-wise/pkg/wise"
+	log "github.com/sirupsen/logrus"
 )
 
 var sourceCurrencies = []string{"GBP", "NOK", "EUR"}
 
 func main() {
+	ctx := context.Background()
 	for _, sourceCurrency := range sourceCurrencies {
-		client := wise.NewRestClient()
-		req := wise.PriceRequest{
-			TargetAmount:   1000,
-			SourceCurrency: sourceCurrency,
-			TargetCurrency: "USD",
-		}
-		resp, err := client.QueryPrice(context.Background(), req)
+		price, err := wise.QueryPrice(ctx, 1000, "USD", sourceCurrency)
 		if err != nil {
-			panic(err)
+			log.Errorf("query price failed: %v", err)
+			continue
 		}
-
-		data, err := resp.VISACreditInBalanceOut()
+		cost, err := wise.NewCost(ctx, price, "TWD")
 		if err != nil {
-			panic(err)
+			log.Errorf("failed to create cost: %v", err)
+			continue
 		}
-
-		// fmt.Printf("%+v\n", data)
-
-		cost, err := wise.NewCost(context.Background(), data)
-		if err != nil {
-			panic(err)
-		}
-		fmt.Printf("%+v\n", cost)
+		log.Infof("%+v", cost)
 	}
 
 }
