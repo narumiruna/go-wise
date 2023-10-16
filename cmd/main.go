@@ -17,7 +17,7 @@ func main() {
 			log.Errorf("query price failed: %v", err)
 			continue
 		}
-		cost, err := wise.NewCost(ctx, price, "TWD")
+		cost, err := wise.NewCost(ctx, price)
 		if err != nil {
 			log.Errorf("failed to create cost: %v", err)
 			continue
