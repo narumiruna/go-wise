@@ -17,7 +17,7 @@ type Cost struct {
 	USDTTWD float64 `json:"usdt_twd"`
 }
 
-func NewCost(ctx context.Context, price *Price, quoteCurrency string) (*Cost, error) {
+func NewCost(ctx context.Context, price *Price) (*Cost, error) {
 	bidAsk, err := max.QueryUSDTTWD()
 	if err != nil {
 		return nil, err

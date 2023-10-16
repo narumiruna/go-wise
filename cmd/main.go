@@ -29,7 +29,7 @@ func main() {
 
 		// fmt.Printf("%+v\n", data)
 
-		cost, err := wise.NewCost(context.Background(), data, "TWD")
+		cost, err := wise.NewCost(context.Background(), data)
 		if err != nil {
 			panic(err)
 		}
