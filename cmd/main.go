@@ -7,7 +7,7 @@ import (
 	"github.com/narumiruna/go-wise/pkg/wise"
 )
 
-var sourceCurrencies = []string{"GBP", "EUR"}
+var sourceCurrencies = []string{"GBP", "NOK", "EUR"}
 
 func main() {
 	for _, sourceCurrency := range sourceCurrencies {
@@ -22,23 +22,18 @@ func main() {
 			panic(err)
 		}
 
-		data, err := resp.BankTransferInBalanceOut()
+		data, err := resp.VISACreditInBalanceOut()
 		if err != nil {
 			panic(err)
 		}
 
-		fmt.Printf("%+v\n", data)
+		// fmt.Printf("%+v\n", data)
+
+		cost, err := wise.NewCost(context.Background(), data, "TWD")
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("%+v\n", cost)
 	}
 
-	payment := wise.Payment{
-		SourceAmount:   795.94,
-		SourceCurrency: "GBP",
-		TargetAmount:   1000,
-		TargetCurrency: "USD",
-	}
-	cost, err := wise.NewCost(context.Background(), payment, "TWD")
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("%+v\n", cost)
 }

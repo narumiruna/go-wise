@@ -14,5 +14,5 @@ func QueryPrice(amount float64, currency, payWith string) (*Price, error) {
 	if err != nil {
 		return nil, err
 	}
-	return req.BankTransferInBalanceOut()
+	return req.VISACreditInBalanceOut()
 }

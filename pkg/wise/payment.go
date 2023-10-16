@@ -4,71 +4,52 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/narumiruna/go-visa-fx-rates/pkg/visa"
+	"github.com/narumiruna/go-wise/pkg/max"
 )
 
 const (
-	defaultQuoteCurrency = "TWD"
-	defaultCardFeeRate   = 0.015
-	defaultMilesRate     = 0.1
+	defaultCardFeeRate = 0.015
+	defaultMilesRate   = 0.1
 )
 
-type Payment struct {
-	SourceAmount   float64 `json:"sourceAmount"`
-	SourceCurrency string  `json:"sourceCurrency"`
-	TargetAmount   float64 `json:"targetAmount"`
-	TargetCurrency string  `json:"targetCurrency"`
-}
-
 type Cost struct {
-	Payment       Payment `json:"payment"`
-	QuoteCurrency string  `json:"quoteCurrency"`
-
-	sourceQuoteAsk float64
-	targetQuoteBid float64
+	Price   *Price  `json:"payment"`
+	USDTTWD float64 `json:"usdt_twd"`
 }
 
-func NewCost(ctx context.Context, payment Payment, quoteCurrency string) (*Cost, error) {
-	client := visa.NewRestClient()
-	sourceQuoteAsk, err := client.AskPrice(ctx, payment.SourceCurrency, quoteCurrency)
+func NewCost(ctx context.Context, price *Price, quoteCurrency string) (*Cost, error) {
+	bidAsk, err := max.QueryUSDTTWD()
 	if err != nil {
 		return nil, err
 	}
-	targetQuoteBid, err := client.BidPrice(ctx, payment.TargetCurrency, quoteCurrency)
-	if err != nil {
-		return nil, err
-	}
-
 	return &Cost{
-		Payment:        payment,
-		QuoteCurrency:  defaultQuoteCurrency,
-		sourceQuoteAsk: sourceQuoteAsk,
-		targetQuoteBid: targetQuoteBid,
+		Price:   price,
+		USDTTWD: bidAsk.Ask,
 	}, nil
 }
 
-func (c *Cost) Amount() float64 {
-	return c.Payment.SourceAmount * c.sourceQuoteAsk
+func (c *Cost) SourceAmount() float64 {
+	return c.Price.SourceAmount
 }
 
 func (c *Cost) CardFee() float64 {
-	return c.Amount() * defaultCardFeeRate
+	return c.SourceAmount() * defaultCardFeeRate
 }
 
 func (c *Cost) TotalAmount() float64 {
-	return c.Amount() + c.CardFee()
+	return c.SourceAmount() + c.CardFee()
+}
+
+func (c *Cost) WiseFeeRate() float64 {
+	return c.Price.Total / c.Price.SourceAmount
 }
 
 func (c *Cost) Miles() float64 {
-	return c.Amount() * defaultMilesRate
-}
-
-func (c *Cost) WiseFee() float64 {
-	return c.Amount() - c.Payment.TargetAmount*c.targetQuoteBid
+	return c.SourceAmount() * c.USDTTWD * defaultMilesRate
 }
 
 func (c *Cost) TotalFee() float64 {
-	return c.CardFee() + c.WiseFee()
+	return c.CardFee() + c.Price.Total
 }
 
 func (c *Cost) TotalFeeRate() float64 {
@@ -76,22 +57,22 @@ func (c *Cost) TotalFeeRate() float64 {
 }
 
 func (c *Cost) MilePrice() float64 {
-	return c.TotalFee() / c.Miles()
+	return c.TotalFee() * c.USDTTWD / c.Miles()
 }
 
 func (c *Cost) String() string {
-	return fmt.Sprintf(`Add %.2f %s, pay %.2f %s (%.2f %s), total fees: %.2f %s (%.2f%%), miles: %.2f, mile price: %.2f %s/mile`,
-		c.Payment.TargetAmount,
-		c.Payment.TargetCurrency,
-		c.Payment.SourceAmount,
-		c.Payment.SourceCurrency,
-		c.Amount(),
-		c.QuoteCurrency,
+	return fmt.Sprintf(`Add %.2f %s, pay %.2f %s, wise fee: %.2f %s (%.2f%%), total fee: %.2f %s (%.2f%%), miles: %.2f, mile price: %.2f TWD/mile`,
+		c.Price.TargetAmount,
+		c.Price.TargetCurrency,
+		c.Price.SourceAmount,
+		c.Price.SourceCurrency,
+		c.Price.Total,
+		c.Price.SourceCurrency,
+		c.WiseFeeRate()*100,
 		c.TotalFee(),
-		c.QuoteCurrency,
+		c.Price.SourceCurrency,
 		c.TotalFeeRate()*100.0,
 		c.Miles(),
 		c.MilePrice(),
-		c.QuoteCurrency,
 	)
 }
