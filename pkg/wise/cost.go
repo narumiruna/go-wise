@@ -59,7 +59,7 @@ func (c *Cost) MilePrice() float64 {
 }
 
 func (c *Cost) String() string {
-	return fmt.Sprintf(`Add %.2f %s, pay %.2f %s, wise fee: %.2f %s (%.2f%%), total fee: %.2f %s (%.2f%%), miles: %.2f, mile price: %.2f TWD/mile`,
+	return fmt.Sprintf(`Add %.2f %s, pay with %.2f %s, wise fee: %.2f %s (%.2f%%), total fee: %.2f %s (%.2f%%), miles: %.2f, mile price: %.2f TWD/mile`,
 		c.price.TargetAmount,
 		c.price.TargetCurrency,
 		c.price.SourceAmount,
