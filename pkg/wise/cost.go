@@ -12,7 +12,8 @@ const (
 )
 
 type Cost struct {
-	price         *Price
+	*Price
+
 	quoteCurrency string
 	sourceMidRate float64
 }
@@ -24,30 +25,30 @@ func NewCost(ctx context.Context, price *Price) (*Cost, error) {
 	}
 
 	return &Cost{
-		price:         price,
+		Price:         price,
 		quoteCurrency: defaultQuoteCurrency,
 		sourceMidRate: sourceMidRate,
 	}, nil
 }
 
 func (c *Cost) CardFee() float64 {
-	return c.price.SourceAmount * defaultCardFeeRate
+	return c.SourceAmount * defaultCardFeeRate
 }
 
 func (c *Cost) TotalAmount() float64 {
-	return c.price.SourceAmount + c.CardFee()
+	return c.SourceAmount + c.CardFee()
 }
 
 func (c *Cost) WiseFeeRate() float64 {
-	return c.price.Total / c.price.SourceAmount
+	return c.Total / c.SourceAmount
 }
 
 func (c *Cost) Miles() float64 {
-	return c.price.SourceAmount * c.sourceMidRate * defaultMilesRate
+	return c.SourceAmount * c.sourceMidRate * defaultMilesRate
 }
 
 func (c *Cost) TotalFee() float64 {
-	return c.CardFee() + c.price.Total
+	return c.CardFee() + c.Total
 }
 
 func (c *Cost) TotalFeeRate() float64 {
@@ -59,10 +60,10 @@ func (c *Cost) MilePrice() float64 {
 }
 
 func (c *Cost) String() string {
-	s := fmt.Sprintf("Add %.2f %s", c.price.TargetAmount, c.price.TargetCurrency)
-	s += fmt.Sprintf(", pay with %.2f %s", c.price.SourceAmount, c.price.SourceCurrency)
-	s += fmt.Sprintf(", wise fee: %.2f %s (%.2f%%)", c.price.Total, c.price.SourceCurrency, c.WiseFeeRate()*100)
-	s += fmt.Sprintf(", total fee: %.2f %s (%.2f%%)", c.TotalFee(), c.price.SourceCurrency, c.TotalFeeRate()*100)
+	s := fmt.Sprintf("Add %.2f %s", c.TargetAmount, c.TargetCurrency)
+	s += fmt.Sprintf(", pay with %.2f %s", c.SourceAmount, c.SourceCurrency)
+	s += fmt.Sprintf(", wise fee: %.2f %s (%.2f%%)", c.Total, c.SourceCurrency, c.WiseFeeRate()*100)
+	s += fmt.Sprintf(", total fee: %.2f %s (%.2f%%)", c.TotalFee(), c.SourceCurrency, c.TotalFeeRate()*100)
 	s += fmt.Sprintf(", miles: %.2f", c.Miles())
 	s += fmt.Sprintf(", mile price: %.2f %s/mile", c.MilePrice(), c.quoteCurrency)
 	return s
