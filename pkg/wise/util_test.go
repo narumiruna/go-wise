@@ -40,7 +40,7 @@ func Test_QueryMidRate(t *testing.T) {
 
 	ctx := context.Background()
 	for _, c := range cases {
-		rate, err := QueryMidRate(ctx, c.from, c.to)
+		rate, err := QueryRate(ctx, c.from, c.to)
 		assert.NoError(t, err)
 		assert.Greater(t, rate, 0.0)
 	}
