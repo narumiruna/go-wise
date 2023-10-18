@@ -75,3 +75,31 @@ func (c *RestClient) QueryPrice(ctx context.Context, request PriceRequest) (resp
 
 	return response, nil
 }
+
+func (c *RestClient) QueryRate(ctx context.Context, request RateRequest) (response *RateResponse, err error) {
+	values := url.Values{}
+	values.Add("source", request.Source)
+	values.Add("target", request.Target)
+
+	req, err := c.NewRequest(ctx, "GET", "/rates/live", values)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := json.Unmarshal(body, &response); err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}

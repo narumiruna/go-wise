@@ -37,15 +37,14 @@ func (r *PriceRequest) Values() url.Values {
 		values.Add("profileCountry", r.ProfileCountry)
 	}
 
-	if r.ProfileType == "" {
-		r.ProfileType = "PERSONAL"
+	if r.ProfileType != "" {
+		values.Add("profileType", r.ProfileType)
 	}
-	values.Add("profileType", r.ProfileType)
 
-	if r.Markers == "" {
-		r.Markers = "FCF_PRICING"
+	if r.Markers != "" {
+		values.Add("markers", r.Markers)
 	}
-	values.Add("markers", r.Markers)
+
 	return values
 }
 
@@ -100,4 +99,16 @@ func (p PriceResponse) BankTransferInBalanceOut() (*Price, error) {
 
 func (p PriceResponse) VISACreditInBalanceOut() (*Price, error) {
 	return p.FindByPayMethod("VISA_CREDIT", "BALANCE")
+}
+
+type RateRequest struct {
+	Source string `json:"source"`
+	Target string `json:"target"`
+}
+
+type RateResponse struct {
+	Source string  `json:"source"`
+	Target string  `json:"target"`
+	Value  float64 `json:"value"`
+	Time   int64   `json:"time"`
 }

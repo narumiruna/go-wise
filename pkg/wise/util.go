@@ -19,21 +19,13 @@ func QueryPrice(ctx context.Context, amount float64, currency, payWith string) (
 
 func QueryMidRate(ctx context.Context, from, to string) (float64, error) {
 	client := NewRestClient()
-	req := PriceRequest{
-		SourceCurrency: from,
-		TargetAmount:   2000,
-		TargetCurrency: to,
-		ProfileCountry: "TW",
+	req := RateRequest{
+		Source: from,
+		Target: to,
 	}
-	resp, err := client.QueryPrice(ctx, req)
+	resp, err := client.QueryRate(ctx, req)
 	if err != nil {
 		return 0, err
 	}
-
-	price, err := resp.VISACreditInBalanceOut()
-	if err != nil {
-		return 0, err
-	}
-
-	return price.MidRate, nil
+	return resp.Value, nil
 }
