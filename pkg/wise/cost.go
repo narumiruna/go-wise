@@ -15,7 +15,7 @@ type Cost struct {
 	*Price
 
 	quoteCurrency string
-	sourceMidRate float64
+	sourceRate    float64
 }
 
 func NewCost(ctx context.Context, price *Price) (*Cost, error) {
@@ -27,7 +27,7 @@ func NewCost(ctx context.Context, price *Price) (*Cost, error) {
 	return &Cost{
 		Price:         price,
 		quoteCurrency: defaultQuoteCurrency,
-		sourceMidRate: sourceMidRate,
+		sourceRate:    sourceMidRate,
 	}, nil
 }
 
@@ -44,7 +44,7 @@ func (c *Cost) WiseFeeRate() float64 {
 }
 
 func (c *Cost) Miles() float64 {
-	return c.SourceAmount * c.sourceMidRate * defaultMilesRate
+	return c.SourceAmount * c.sourceRate * defaultMilesRate
 }
 
 func (c *Cost) TotalFee() float64 {
@@ -56,7 +56,7 @@ func (c *Cost) TotalFeeRate() float64 {
 }
 
 func (c *Cost) MilePrice() float64 {
-	return c.TotalFee() * c.sourceMidRate / c.Miles()
+	return c.TotalFee() * c.sourceRate / c.Miles()
 }
 
 func (c *Cost) String() string {
