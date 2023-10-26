@@ -64,7 +64,6 @@ func (c *Cost) String() string {
 	s += fmt.Sprintf(", pay with %.2f %s", c.SourceAmount, c.SourceCurrency)
 	s += fmt.Sprintf(", wise fee: %.2f %s (%.2f%%)", c.Total, c.SourceCurrency, c.WiseFeeRate()*100)
 	s += fmt.Sprintf(", total fee: %.2f %s (%.2f%%)", c.TotalFee(), c.SourceCurrency, c.TotalFeeRate()*100)
-	s += fmt.Sprintf(", miles: %.2f", c.Miles())
-	s += fmt.Sprintf(", mile price: %.2f %s/mile", c.MilePrice(), c.quoteCurrency)
+	s += fmt.Sprintf(", miles: %.2f (%.2f %s/mile)", c.Miles(), c.MilePrice(), c.quoteCurrency)
 	return s
 }
