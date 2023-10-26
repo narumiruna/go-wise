@@ -5,7 +5,7 @@
 ```go
 ctx := context.Background()
 
-price, err := wise.QueryPrice(ctx, 1000, "USD", "GBP")
+price, err := wise.QueryPrice(ctx, "GBP", 1000, "USD")
 if err != nil {
     panic(err)
 }

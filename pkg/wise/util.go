@@ -3,6 +3,7 @@ package wise
 import (
 	"context"
 	"fmt"
+	"strings"
 )
 
 func findPrice(prices []Price, payInMethod, payOutMethod string) (*Price, error) {
@@ -15,12 +16,12 @@ func findPrice(prices []Price, payInMethod, payOutMethod string) (*Price, error)
 	return nil, fmt.Errorf("method not found")
 }
 
-func QueryPrice(ctx context.Context, amount float64, currency, payWith string) (*Price, error) {
+func QueryPrice(ctx context.Context, source string, amount float64, target string) (*Price, error) {
 	client := NewRestClient()
 	req := PriceRequest{
-		SourceCurrency: payWith,
+		SourceCurrency: strings.ToLower(source),
 		TargetAmount:   amount,
-		TargetCurrency: currency,
+		TargetCurrency: strings.ToLower(target),
 		ProfileCountry: "GB",
 	}
 	resp, err := client.QueryPrice(ctx, req)
@@ -33,8 +34,8 @@ func QueryPrice(ctx context.Context, amount float64, currency, payWith string) (
 func QueryRate(ctx context.Context, source, target string) (float64, error) {
 	client := NewRestClient()
 	req := RateRequest{
-		Source: source,
-		Target: target,
+		Source: strings.ToLower(source),
+		Target: strings.ToLower(target),
 	}
 	resp, err := client.QueryRate(ctx, req)
 	if err != nil {

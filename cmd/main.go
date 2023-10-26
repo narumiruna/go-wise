@@ -12,7 +12,7 @@ func main() {
 
 	sourceCurrencies := []string{"GBP", "NOK", "EUR"}
 	for _, sourceCurrency := range sourceCurrencies {
-		price, err := wise.QueryPrice(ctx, 1000, "USD", sourceCurrency)
+		price, err := wise.QueryPrice(ctx, sourceCurrency, 1000, "USD")
 		if err != nil {
 			panic(err)
 		}
