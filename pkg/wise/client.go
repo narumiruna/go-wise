@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/google/go-querystring/query"
 )
 
 const defaultTimeout = 15 * time.Second
@@ -52,8 +54,13 @@ func (c *RestClient) NewRequest(ctx context.Context, method string, refURL strin
 	return req, nil
 }
 
-func (c *RestClient) QueryPrice(ctx context.Context, request PriceRequest) (response PriceResponse, err error) {
-	req, err := c.NewRequest(ctx, "GET", "/gateway/v1/price", request.Values())
+func (c *RestClient) QueryPrice(ctx context.Context, request PriceRequest) (response []Price, err error) {
+	param, err := query.Values(request)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := c.NewRequest(ctx, "GET", "/gateway/v1/price", param)
 	if err != nil {
 		return nil, err
 	}
@@ -76,12 +83,13 @@ func (c *RestClient) QueryPrice(ctx context.Context, request PriceRequest) (resp
 	return response, nil
 }
 
-func (c *RestClient) QueryRate(ctx context.Context, request RateRequest) (response *RateResponse, err error) {
-	values := url.Values{}
-	values.Add("source", request.Source)
-	values.Add("target", request.Target)
+func (c *RestClient) QueryRate(ctx context.Context, request RateRequest) (response *Rate, err error) {
+	param, err := query.Values(request)
+	if err != nil {
+		return nil, err
+	}
 
-	req, err := c.NewRequest(ctx, "GET", "/rates/live", values)
+	req, err := c.NewRequest(ctx, "GET", "/rates/live", param)
 	if err != nil {
 		return nil, err
 	}

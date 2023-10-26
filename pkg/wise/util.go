@@ -1,6 +1,19 @@
 package wise
 
-import "context"
+import (
+	"context"
+	"fmt"
+)
+
+func findPrice(prices []Price, payInMethod, payOutMethod string) (*Price, error) {
+	for _, p := range prices {
+		if p.PayInMethod == payInMethod && p.PayOutMethod == payOutMethod {
+			return &p, nil
+		}
+	}
+
+	return nil, fmt.Errorf("method not found")
+}
 
 func QueryPrice(ctx context.Context, amount float64, currency, payWith string) (*Price, error) {
 	client := NewRestClient()
@@ -14,7 +27,7 @@ func QueryPrice(ctx context.Context, amount float64, currency, payWith string) (
 	if err != nil {
 		return nil, err
 	}
-	return resp.VISACreditInBalanceOut()
+	return findPrice(resp, "VISA_CREDIT", "BALANCE")
 }
 
 func QueryRate(ctx context.Context, source, target string) (float64, error) {
