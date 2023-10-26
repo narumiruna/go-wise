@@ -19,9 +19,9 @@ func findPrice(prices []Price, payInMethod, payOutMethod string) (*Price, error)
 func QueryPrice(ctx context.Context, source string, amount float64, target string) (*Price, error) {
 	client := NewRestClient()
 	req := PriceRequest{
-		SourceCurrency: strings.ToLower(source),
+		SourceCurrency: strings.ToUpper(source),
 		TargetAmount:   amount,
-		TargetCurrency: strings.ToLower(target),
+		TargetCurrency: strings.ToUpper(target),
 		ProfileCountry: "GB",
 	}
 	resp, err := client.QueryPrice(ctx, req)
@@ -34,8 +34,8 @@ func QueryPrice(ctx context.Context, source string, amount float64, target strin
 func QueryRate(ctx context.Context, source, target string) (float64, error) {
 	client := NewRestClient()
 	req := RateRequest{
-		Source: strings.ToLower(source),
-		Target: strings.ToLower(target),
+		Source: strings.ToUpper(source),
+		Target: strings.ToUpper(target),
 	}
 	resp, err := client.QueryRate(ctx, req)
 	if err != nil {
