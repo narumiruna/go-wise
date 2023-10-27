@@ -8,18 +8,18 @@ import (
 )
 
 func main() {
+	client := wise.NewRestClient()
 	ctx := context.Background()
 
-	sourceCurrencies := []string{"GBP", "NOK", "EUR"}
-	for _, sourceCurrency := range sourceCurrencies {
-		price, err := wise.QueryPrice(ctx, sourceCurrency, 1000, "USD")
-		if err != nil {
-			panic(err)
-		}
-		cost, err := wise.NewCost(ctx, price)
-		if err != nil {
-			panic(err)
-		}
-		fmt.Printf("%+v\n", cost)
+	price, err := client.QueryPrice(ctx, "GBP", 1000, "USD")
+	if err != nil {
+		panic(err)
 	}
+
+	cost, err := wise.NewCost(ctx, price)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%+v\n", cost)
 }
