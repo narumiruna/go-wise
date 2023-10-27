@@ -3,9 +3,10 @@
 ## Usage
 
 ```go
+client := wise.NewRestClient()
 ctx := context.Background()
 
-price, err := wise.QueryPrice(ctx, "GBP", 1000, "USD")
+price, err := client.QueryPrice(ctx, "GBP", 1000, "USD")
 if err != nil {
     panic(err)
 }
@@ -15,5 +16,5 @@ if err != nil {
     panic(err)
 }
 
-fmt.Printf("%+v", cost)
+fmt.Printf("%+v\n", cost)
 ```
