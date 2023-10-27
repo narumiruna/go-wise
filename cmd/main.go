@@ -9,10 +9,11 @@ import (
 
 func main() {
 	ctx := context.Background()
+	client := wise.NewRestClient()
 
-	sourceCurrencies := []string{"GBP", "NOK", "EUR"}
-	for _, sourceCurrency := range sourceCurrencies {
-		price, err := wise.QueryPrice(ctx, sourceCurrency, 1000, "USD")
+	sources := []string{"GBP", "NOK", "EUR"}
+	for _, source := range sources {
+		price, err := client.QueryPrice(ctx, source, 1000, "USD")
 		if err != nil {
 			panic(err)
 		}

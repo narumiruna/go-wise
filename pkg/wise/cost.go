@@ -19,7 +19,7 @@ type Cost struct {
 }
 
 func NewCost(ctx context.Context, price *Price) (*Cost, error) {
-	sourceMidRate, err := QueryRate(ctx, price.SourceCurrency, defaultQuoteCurrency)
+	sourceMidRate, err := NewRestClient().QueryRate(ctx, price.SourceCurrency, defaultQuoteCurrency)
 	if err != nil {
 		return nil, err
 	}
