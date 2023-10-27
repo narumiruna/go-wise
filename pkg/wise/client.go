@@ -2,43 +2,112 @@ package wise
 
 import (
 	"context"
+	"encoding/json"
+	"io"
 	"net/http"
 	"net/url"
 	"time"
 
-	"github.com/c9s/requestgen"
+	"github.com/google/go-querystring/query"
 )
 
-const defaultHTTPTimeout = time.Second * 15
-const wiseBaseURL = "https://wise.com"
+const defaultTimeout = 15 * time.Second
+const baseApiUrl = "https://wise.com"
 
 type RestClient struct {
-	requestgen.BaseAPIClient
+	client  *http.Client
+	baseURL *url.URL
 }
 
 func NewRestClient() *RestClient {
-	u, err := url.Parse(wiseBaseURL)
+	u, err := url.Parse(baseApiUrl)
 	if err != nil {
 		panic(err)
 	}
 
 	return &RestClient{
-		BaseAPIClient: requestgen.BaseAPIClient{
-			BaseURL: u,
-			HttpClient: &http.Client{
-				Timeout: defaultHTTPTimeout,
-			},
+		client: &http.Client{
+			Timeout: defaultTimeout,
 		},
+		baseURL: u,
 	}
 }
 
-func (c *RestClient) NewAuthenticatedRequest(ctx context.Context, method, refURL string, params url.Values, payload interface{}) (*http.Request, error) {
-	req, err := c.NewRequest(ctx, method, refURL, params, payload)
+func (c *RestClient) NewRequest(ctx context.Context, method string, refURL string, params url.Values) (*http.Request, error) {
+	rel, err := url.Parse(refURL)
 	if err != nil {
 		return nil, err
 	}
+
+	if params != nil {
+		rel.RawQuery = params.Encode()
+	}
+
+	u := c.baseURL.ResolveReference(rel)
+
+	req, err := http.NewRequest(method, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req = req.WithContext(ctx)
 	return req, nil
 }
 
+func (c *RestClient) QueryPrice(ctx context.Context, request PriceRequest) (response []Price, err error) {
+	param, err := query.Values(request)
+	if err != nil {
+		return nil, err
+	}
 
+	req, err := c.NewRequest(ctx, "GET", "/gateway/v1/price", param)
+	if err != nil {
+		return nil, err
+	}
 
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := json.Unmarshal(body, &response); err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+func (c *RestClient) QueryRate(ctx context.Context, request RateRequest) (response *Rate, err error) {
+	param, err := query.Values(request)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := c.NewRequest(ctx, "GET", "/rates/live", param)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := json.Unmarshal(body, &response); err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
