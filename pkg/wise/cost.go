@@ -8,7 +8,7 @@ import (
 const (
 	defaultQuoteCurrency = "TWD"
 	defaultCardFeeRate   = 0.015
-	defaultMilesRate     = 0.1
+	defaultRewardRate    = 0.1
 )
 
 type Cost struct {
@@ -16,10 +16,17 @@ type Cost struct {
 
 	quoteCurrency string
 	sourceRate    float64
+	cardFeeRate   float64
+	rewardRate    float64
 }
 
-func NewCost(ctx context.Context, price *Price) (*Cost, error) {
-	sourceMidRate, err := NewRestClient().QueryRate(ctx, price.SourceCurrency, defaultQuoteCurrency)
+func (c *RestClient) NewCost(ctx context.Context, source string, amount float64, target string) (*Cost, error) {
+	price, err := c.QueryPrice(ctx, source, amount, target)
+	if err != nil {
+		return nil, err
+	}
+
+	rate, err := c.QueryRate(ctx, price.SourceCurrency, defaultQuoteCurrency)
 	if err != nil {
 		return nil, err
 	}
@@ -27,12 +34,14 @@ func NewCost(ctx context.Context, price *Price) (*Cost, error) {
 	return &Cost{
 		Price:         price,
 		quoteCurrency: defaultQuoteCurrency,
-		sourceRate:    sourceMidRate,
+		sourceRate:    rate,
+		cardFeeRate:   defaultCardFeeRate,
+		rewardRate:    defaultRewardRate,
 	}, nil
 }
 
 func (c *Cost) CardFee() float64 {
-	return c.SourceAmount * defaultCardFeeRate
+	return c.SourceAmount * c.cardFeeRate
 }
 
 func (c *Cost) TotalAmount() float64 {
@@ -44,7 +53,7 @@ func (c *Cost) WiseFeeRate() float64 {
 }
 
 func (c *Cost) Miles() float64 {
-	return c.SourceAmount * c.sourceRate * defaultMilesRate
+	return c.SourceAmount * c.sourceRate * c.rewardRate
 }
 
 func (c *Cost) TotalFee() float64 {

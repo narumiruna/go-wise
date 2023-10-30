@@ -11,12 +11,7 @@ func main() {
 	client := wise.NewRestClient()
 	ctx := context.Background()
 
-	price, err := client.QueryPrice(ctx, "GBP", 1000, "USD")
-	if err != nil {
-		panic(err)
-	}
-
-	cost, err := wise.NewCost(ctx, price)
+	cost, err := client.NewCost(ctx, "GBP", 1000, "USD")
 	if err != nil {
 		panic(err)
 	}
