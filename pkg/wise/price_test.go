@@ -21,8 +21,12 @@ func Test_QueryPrice(t *testing.T) {
 	ctx := context.Background()
 	client := NewRestClient()
 	for _, c := range cases {
-		price, err := client.QueryPrice(ctx, c.source, c.amount, c.target)
+		prices, err := client.QueryPrice(ctx, c.source, c.amount, c.target)
 		assert.NoError(t, err)
+
+		price, err := findPrice(prices, "VISA_CREDIT", "BALANCE")
+		assert.NoError(t, err)
+
 		assert.IsType(t, &Price{}, price)
 		assert.Equal(t, c.target, price.TargetCurrency)
 		assert.Equal(t, c.source, price.SourceCurrency)

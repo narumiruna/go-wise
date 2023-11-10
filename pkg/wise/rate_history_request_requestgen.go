@@ -59,7 +59,7 @@ func (r *RateHistoryRequest) GetQueryParameters() (url.Values, error) {
 
 	// TEMPLATE check-valid-values
 	switch resolution {
-	case HourlyResolution, DailyResolution:
+	case ResolutionHourly, ResolutionDaily:
 		params["resolution"] = resolution
 
 	default:
@@ -75,7 +75,7 @@ func (r *RateHistoryRequest) GetQueryParameters() (url.Values, error) {
 
 	// TEMPLATE check-valid-values
 	switch unit {
-	case DayUnit, MonthUnit, YearUnit:
+	case UnitDay, UnitMonth, UnitYear:
 		params["unit"] = unit
 
 	default:

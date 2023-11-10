@@ -17,4 +17,14 @@ func main() {
 	}
 
 	fmt.Println(cost.String())
+
+	// rate history
+	rates, err := client.QueryRateHistory(ctx, "GBP", "USD", 10, wise.ResolutionHourly, wise.UnitDay)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, rate := range rates {
+		fmt.Printf("%+v\n", rate)
+	}
 }

@@ -29,7 +29,12 @@ type Cost struct {
 }
 
 func (c *RestClient) NewCost(ctx context.Context, source string, amount float64, target string) (*Cost, error) {
-	price, err := c.QueryPrice(ctx, source, amount, target)
+	prices, err := c.QueryPrice(ctx, source, amount, target)
+	if err != nil {
+		return nil, err
+	}
+
+	price, err := findPrice(prices, "VISA_CREDIT", "BALANCE")
 	if err != nil {
 		return nil, err
 	}

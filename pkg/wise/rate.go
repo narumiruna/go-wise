@@ -56,23 +56,8 @@ func (c *RestClient) QueryRateHistory(ctx context.Context, source, target string
 }
 
 type Rate struct {
-	Source string  `json:"source"`
-	Target string  `json:"target"`
-	Value  float64 `json:"value"`
-	Time   int64   `json:"time"`
+	Source string    `json:"source"`
+	Target string    `json:"target"`
+	Value  float64   `json:"value"`
+	Time   Timestamp `json:"time"`
 }
-
-type Resolution string
-
-const (
-	HourlyResolution Resolution = "hourly"
-	DailyResolution  Resolution = "daily"
-)
-
-type Unit string
-
-const (
-	DayUnit   Unit = "day"
-	MonthUnit Unit = "month"
-	YearUnit  Unit = "year"
-)

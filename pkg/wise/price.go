@@ -26,13 +26,9 @@ func (c *RestClient) NewPriceRequest() *PriceRequest {
 	}
 }
 
-func (c *RestClient) QueryPrice(ctx context.Context, source string, amount float64, target string) (*Price, error) {
+func (c *RestClient) QueryPrice(ctx context.Context, source string, amount float64, target string) ([]Price, error) {
 	req := c.NewPriceRequest().SourceCurrency(source).TargetAmount(amount).TargetCurrency(target)
-	resp, err := req.Do(ctx)
-	if err != nil {
-		return nil, err
-	}
-	return findPrice(resp, "VISA_CREDIT", "BALANCE")
+	return req.Do(ctx)
 }
 
 type Price struct {
