@@ -40,6 +40,11 @@ func (c *RestClient) NewAuthenticatedRequest(ctx context.Context, method, refURL
 	return req, nil
 }
 
+func (c *RestClient) QueryPrice(ctx context.Context, source string, amount float64, target string) ([]Price, error) {
+	req := c.NewPriceRequest().SourceCurrency(source).TargetAmount(amount).TargetCurrency(target)
+	return req.Do(ctx)
+}
+
 func (c *RestClient) QueryRate(ctx context.Context, source, target string) (*Rate, error) {
 	req := c.NewRatesLiveRequest().Source(source).Target(target)
 	return req.Do(ctx)

@@ -1,8 +1,6 @@
 package wise
 
 import (
-	"context"
-
 	"github.com/c9s/requestgen"
 )
 
@@ -24,9 +22,4 @@ func (c *RestClient) NewPriceRequest() *PriceRequest {
 	return &PriceRequest{
 		client: c,
 	}
-}
-
-func (c *RestClient) QueryPrice(ctx context.Context, source string, amount float64, target string) ([]Price, error) {
-	req := c.NewPriceRequest().SourceCurrency(source).TargetAmount(amount).TargetCurrency(target)
-	return req.Do(ctx)
 }
