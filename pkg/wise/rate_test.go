@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_QueryMidRate(t *testing.T) {
+func Test_QueryRate(t *testing.T) {
 	cases := []struct {
 		source string
 		target string

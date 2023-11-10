@@ -7,10 +7,6 @@ import (
 
 type Time time.Time
 
-func (t Time) Unix() float64 {
-	return float64(time.Time(t).Unix())
-}
-
 func (t Time) String() string {
 	return time.Time(t).String()
 }
