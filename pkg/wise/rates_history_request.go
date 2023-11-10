@@ -8,11 +8,11 @@ import (
 type RatesHistoryRequest struct {
 	client requestgen.AuthenticatedAPIClient
 
-	source     string     `param:"source,query"`
-	target     string     `param:"target,query"`
-	length     int        `param:"length,query"`
-	resolution Resolution `param:"resolution,query"`
-	unit       Unit       `param:"unit,query"`
+	source     string     `param:"source"`
+	target     string     `param:"target"`
+	length     int        `param:"length"`
+	resolution Resolution `param:"resolution"`
+	unit       Unit       `param:"unit"`
 }
 
 func (c *RestClient) NewRatesHistoryRequest() *RatesHistoryRequest {

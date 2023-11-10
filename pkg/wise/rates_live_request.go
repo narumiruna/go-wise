@@ -8,8 +8,8 @@ import (
 type RatesLiveRequest struct {
 	client requestgen.AuthenticatedAPIClient
 
-	source string `param:"source,query"`
-	target string `param:"target,query"`
+	source string `param:"source"`
+	target string `param:"target"`
 }
 
 func (c *RestClient) NewRatesLiveRequest() *RatesLiveRequest {

@@ -24,16 +24,6 @@ func (r *RatesLiveRequest) Target(target string) *RatesLiveRequest {
 // GetQueryParameters builds and checks the query parameters and returns url.Values
 func (r *RatesLiveRequest) GetQueryParameters() (url.Values, error) {
 	var params = map[string]interface{}{}
-	// check source field -> json key source
-	source := r.source
-
-	// assign parameter of source
-	params["source"] = source
-	// check target field -> json key target
-	target := r.target
-
-	// assign parameter of target
-	params["target"] = target
 
 	query := url.Values{}
 	for _k, _v := range params {
@@ -46,6 +36,16 @@ func (r *RatesLiveRequest) GetQueryParameters() (url.Values, error) {
 // GetParameters builds and checks the parameters and return the result in a map object
 func (r *RatesLiveRequest) GetParameters() (map[string]interface{}, error) {
 	var params = map[string]interface{}{}
+	// check source field -> json key source
+	source := r.source
+
+	// assign parameter of source
+	params["source"] = source
+	// check target field -> json key target
+	target := r.target
+
+	// assign parameter of target
+	params["target"] = target
 
 	return params, nil
 }
@@ -131,9 +131,9 @@ func (r *RatesLiveRequest) GetSlugsMap() (map[string]string, error) {
 
 func (r *RatesLiveRequest) Do(ctx context.Context) (*Rate, error) {
 
-	// no body params
+	// empty params for GET operation
 	var params interface{}
-	query, err := r.GetQueryParameters()
+	query, err := r.GetParametersQuery()
 	if err != nil {
 		return nil, err
 	}

@@ -54,6 +54,18 @@ func (p *PriceRequest) Markers(markers string) *PriceRequest {
 // GetQueryParameters builds and checks the query parameters and returns url.Values
 func (p *PriceRequest) GetQueryParameters() (url.Values, error) {
 	var params = map[string]interface{}{}
+
+	query := url.Values{}
+	for _k, _v := range params {
+		query.Add(_k, fmt.Sprintf("%v", _v))
+	}
+
+	return query, nil
+}
+
+// GetParameters builds and checks the parameters and return the result in a map object
+func (p *PriceRequest) GetParameters() (map[string]interface{}, error) {
+	var params = map[string]interface{}{}
 	// check sourceAmount field -> json key sourceAmount
 	if p.sourceAmount != nil {
 		sourceAmount := *p.sourceAmount
@@ -112,18 +124,6 @@ func (p *PriceRequest) GetQueryParameters() (url.Values, error) {
 		params["markers"] = markers
 	} else {
 	}
-
-	query := url.Values{}
-	for _k, _v := range params {
-		query.Add(_k, fmt.Sprintf("%v", _v))
-	}
-
-	return query, nil
-}
-
-// GetParameters builds and checks the parameters and return the result in a map object
-func (p *PriceRequest) GetParameters() (map[string]interface{}, error) {
-	var params = map[string]interface{}{}
 
 	return params, nil
 }
@@ -209,9 +209,9 @@ func (p *PriceRequest) GetSlugsMap() (map[string]string, error) {
 
 func (p *PriceRequest) Do(ctx context.Context) ([]Price, error) {
 
-	// no body params
+	// empty params for GET operation
 	var params interface{}
-	query, err := p.GetQueryParameters()
+	query, err := p.GetParametersQuery()
 	if err != nil {
 		return nil, err
 	}

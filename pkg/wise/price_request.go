@@ -8,14 +8,14 @@ import (
 type PriceRequest struct {
 	client requestgen.AuthenticatedAPIClient
 
-	sourceAmount   *float64 `param:"sourceAmount,query"`
-	sourceCurrency string   `param:"sourceCurrency,query"`
-	targetAmount   *float64 `param:"targetAmount,query"`
-	targetCurrency string   `param:"targetCurrency,query"`
-	profileID      *int     `param:"profileId,query"`
-	profileCountry *string  `param:"profileCountry,query"`
-	profileType    *string  `param:"profileType,query"`
-	markers        *string  `param:"markers,query"`
+	sourceAmount   *float64 `param:"sourceAmount"`
+	sourceCurrency string   `param:"sourceCurrency"`
+	targetAmount   *float64 `param:"targetAmount"`
+	targetCurrency string   `param:"targetCurrency"`
+	profileID      *int     `param:"profileId"`
+	profileCountry *string  `param:"profileCountry"`
+	profileType    *string  `param:"profileType"`
+	markers        *string  `param:"markers"`
 }
 
 func (c *RestClient) NewPriceRequest() *PriceRequest {

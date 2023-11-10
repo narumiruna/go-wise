@@ -39,6 +39,18 @@ func (r *RatesHistoryRequest) Unit(unit Unit) *RatesHistoryRequest {
 // GetQueryParameters builds and checks the query parameters and returns url.Values
 func (r *RatesHistoryRequest) GetQueryParameters() (url.Values, error) {
 	var params = map[string]interface{}{}
+
+	query := url.Values{}
+	for _k, _v := range params {
+		query.Add(_k, fmt.Sprintf("%v", _v))
+	}
+
+	return query, nil
+}
+
+// GetParameters builds and checks the parameters and return the result in a map object
+func (r *RatesHistoryRequest) GetParameters() (map[string]interface{}, error) {
+	var params = map[string]interface{}{}
 	// check source field -> json key source
 	source := r.source
 
@@ -64,18 +76,6 @@ func (r *RatesHistoryRequest) GetQueryParameters() (url.Values, error) {
 
 	// assign parameter of unit
 	params["unit"] = unit
-
-	query := url.Values{}
-	for _k, _v := range params {
-		query.Add(_k, fmt.Sprintf("%v", _v))
-	}
-
-	return query, nil
-}
-
-// GetParameters builds and checks the parameters and return the result in a map object
-func (r *RatesHistoryRequest) GetParameters() (map[string]interface{}, error) {
-	var params = map[string]interface{}{}
 
 	return params, nil
 }
@@ -161,9 +161,9 @@ func (r *RatesHistoryRequest) GetSlugsMap() (map[string]string, error) {
 
 func (r *RatesHistoryRequest) Do(ctx context.Context) ([]Rate, error) {
 
-	// no body params
+	// empty params for GET operation
 	var params interface{}
-	query, err := r.GetQueryParameters()
+	query, err := r.GetParametersQuery()
 	if err != nil {
 		return nil, err
 	}
