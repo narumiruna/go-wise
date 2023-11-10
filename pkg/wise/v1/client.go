@@ -1,4 +1,4 @@
-package wise
+package v1
 
 import (
 	"context"
@@ -9,15 +9,20 @@ import (
 	"github.com/c9s/requestgen"
 )
 
-const defaultHTTPTimeout = time.Second * 15
-const baseURL = "https://wise.com"
+const (
+	defaultHTTPTimeout = time.Second * 15
+	productionURL      = "https://api.transferwise.com"
+	sandboxURL         = "https://api.sandbox.transferwise.tech"
+)
 
 type RestClient struct {
 	requestgen.BaseAPIClient
+
+	token string
 }
 
 func NewRestClient() *RestClient {
-	u, err := url.Parse(baseURL)
+	u, err := url.Parse(productionURL)
 	if err != nil {
 		panic(err)
 	}
@@ -32,10 +37,18 @@ func NewRestClient() *RestClient {
 	}
 }
 
+func (c *RestClient) Auth(token string) {
+	c.token = token
+}
+
 func (c *RestClient) NewAuthenticatedRequest(ctx context.Context, method, refURL string, params url.Values, payload interface{}) (*http.Request, error) {
 	req, err := c.NewRequest(ctx, method, refURL, params, payload)
 	if err != nil {
 		return nil, err
+	}
+
+	if c.token != "" {
+		req.Header.Set("Authorization", "Bearer "+c.token)
 	}
 	return req, nil
 }
