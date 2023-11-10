@@ -39,7 +39,7 @@ func (c *RestClient) NewCost(ctx context.Context, source string, amount float64,
 		return nil, err
 	}
 
-	rate, err := c.QueryRate(ctx, price.SourceCurrency, defaultQuoteCurrency)
+	rate, err := c.QueryRateLive(ctx, price.SourceCurrency, defaultQuoteCurrency)
 	if err != nil {
 		return nil, err
 	}

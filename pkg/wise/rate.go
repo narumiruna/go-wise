@@ -7,20 +7,20 @@ import (
 )
 
 //go:generate requestgen -method GET -url "/rates/live" -type RateRequest -responseType Rate
-type RateRequest struct {
+type RateLiveRequest struct {
 	client requestgen.AuthenticatedAPIClient
 
 	source string `param:"source,query"`
 	target string `param:"target,query"`
 }
 
-func (c *RestClient) NewRateRequest() *RateRequest {
-	return &RateRequest{
+func (c *RestClient) NewRateRequest() *RateLiveRequest {
+	return &RateLiveRequest{
 		client: c,
 	}
 }
 
-func (c *RestClient) QueryRate(ctx context.Context, source, target string) (float64, error) {
+func (c *RestClient) QueryRateLive(ctx context.Context, source, target string) (float64, error) {
 	req := c.NewRateRequest().Source(source).Target(target)
 	resp, err := req.Do(ctx)
 	if err != nil {

@@ -11,18 +11,18 @@ import (
 	"regexp"
 )
 
-func (r *RateRequest) Source(source string) *RateRequest {
+func (r *RateLiveRequest) Source(source string) *RateLiveRequest {
 	r.source = source
 	return r
 }
 
-func (r *RateRequest) Target(target string) *RateRequest {
+func (r *RateLiveRequest) Target(target string) *RateLiveRequest {
 	r.target = target
 	return r
 }
 
 // GetQueryParameters builds and checks the query parameters and returns url.Values
-func (r *RateRequest) GetQueryParameters() (url.Values, error) {
+func (r *RateLiveRequest) GetQueryParameters() (url.Values, error) {
 	var params = map[string]interface{}{}
 	// check source field -> json key source
 	source := r.source
@@ -44,14 +44,14 @@ func (r *RateRequest) GetQueryParameters() (url.Values, error) {
 }
 
 // GetParameters builds and checks the parameters and return the result in a map object
-func (r *RateRequest) GetParameters() (map[string]interface{}, error) {
+func (r *RateLiveRequest) GetParameters() (map[string]interface{}, error) {
 	var params = map[string]interface{}{}
 
 	return params, nil
 }
 
 // GetParametersQuery converts the parameters from GetParameters into the url.Values format
-func (r *RateRequest) GetParametersQuery() (url.Values, error) {
+func (r *RateLiveRequest) GetParametersQuery() (url.Values, error) {
 	query := url.Values{}
 
 	params, err := r.GetParameters()
@@ -73,7 +73,7 @@ func (r *RateRequest) GetParametersQuery() (url.Values, error) {
 }
 
 // GetParametersJSON converts the parameters from GetParameters into the JSON format
-func (r *RateRequest) GetParametersJSON() ([]byte, error) {
+func (r *RateLiveRequest) GetParametersJSON() ([]byte, error) {
 	params, err := r.GetParameters()
 	if err != nil {
 		return nil, err
@@ -83,13 +83,13 @@ func (r *RateRequest) GetParametersJSON() ([]byte, error) {
 }
 
 // GetSlugParameters builds and checks the slug parameters and return the result in a map object
-func (r *RateRequest) GetSlugParameters() (map[string]interface{}, error) {
+func (r *RateLiveRequest) GetSlugParameters() (map[string]interface{}, error) {
 	var params = map[string]interface{}{}
 
 	return params, nil
 }
 
-func (r *RateRequest) applySlugsToUrl(url string, slugs map[string]string) string {
+func (r *RateLiveRequest) applySlugsToUrl(url string, slugs map[string]string) string {
 	for _k, _v := range slugs {
 		needleRE := regexp.MustCompile(":" + _k + "\\b")
 		url = needleRE.ReplaceAllString(url, _v)
@@ -98,7 +98,7 @@ func (r *RateRequest) applySlugsToUrl(url string, slugs map[string]string) strin
 	return url
 }
 
-func (r *RateRequest) iterateSlice(slice interface{}, _f func(it interface{})) {
+func (r *RateLiveRequest) iterateSlice(slice interface{}, _f func(it interface{})) {
 	sliceValue := reflect.ValueOf(slice)
 	for _i := 0; _i < sliceValue.Len(); _i++ {
 		it := sliceValue.Index(_i).Interface()
@@ -106,7 +106,7 @@ func (r *RateRequest) iterateSlice(slice interface{}, _f func(it interface{})) {
 	}
 }
 
-func (r *RateRequest) isVarSlice(_v interface{}) bool {
+func (r *RateLiveRequest) isVarSlice(_v interface{}) bool {
 	rt := reflect.TypeOf(_v)
 	switch rt.Kind() {
 	case reflect.Slice:
@@ -115,7 +115,7 @@ func (r *RateRequest) isVarSlice(_v interface{}) bool {
 	return false
 }
 
-func (r *RateRequest) GetSlugsMap() (map[string]string, error) {
+func (r *RateLiveRequest) GetSlugsMap() (map[string]string, error) {
 	slugs := map[string]string{}
 	params, err := r.GetSlugParameters()
 	if err != nil {
@@ -129,7 +129,7 @@ func (r *RateRequest) GetSlugsMap() (map[string]string, error) {
 	return slugs, nil
 }
 
-func (r *RateRequest) Do(ctx context.Context) (*Rate, error) {
+func (r *RateLiveRequest) Do(ctx context.Context) (*Rate, error) {
 
 	// no body params
 	var params interface{}
