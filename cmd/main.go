@@ -16,5 +16,5 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("%+v\n", cost)
+	fmt.Println(cost.String())
 }
