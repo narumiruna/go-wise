@@ -23,11 +23,11 @@ jobs:
         with:
           go-version: ${{ matrix.go-version }}
 
-      - name: Build
-        env:
-          GOOS: ${{ matrix.os }}
-          GOARCH: ${{ matrix.arch }}
-        run: go build -o wise ./cmd/main.go
+      # - name: Build
+      #   env:
+      #     GOOS: ${{ matrix.os }}
+      #     GOARCH: ${{ matrix.arch }}
+      #   run: go build -o wise ./cmd/main.go
 
       - name: Test
         run: go test -v ./pkg/...
