@@ -6,7 +6,7 @@ import (
 	"github.com/c9s/requestgen"
 )
 
-//go:generate requestgen -method GET -url "/rates/live" -type RateRequest -responseType Rate
+//go:generate requestgen -method GET -url "/rates/live" -type RateLiveRequest -responseType Rate
 type RateLiveRequest struct {
 	client requestgen.AuthenticatedAPIClient
 
@@ -14,14 +14,14 @@ type RateLiveRequest struct {
 	target string `param:"target,query"`
 }
 
-func (c *RestClient) NewRateRequest() *RateLiveRequest {
+func (c *RestClient) NewRateLiveRequest() *RateLiveRequest {
 	return &RateLiveRequest{
 		client: c,
 	}
 }
 
 func (c *RestClient) QueryRateLive(ctx context.Context, source, target string) (*Rate, error) {
-	req := c.NewRateRequest().Source(source).Target(target)
+	req := c.NewRateLiveRequest().Source(source).Target(target)
 	return req.Do(ctx)
 }
 
