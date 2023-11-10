@@ -44,11 +44,7 @@ func (c *RestClient) NewRateHistoryRequest() *RateHistoryRequest {
 
 func (c *RestClient) QueryRateHistory(ctx context.Context, source, target string, length int, resolution Resolution, unit Unit) ([]Rate, error) {
 	req := c.NewRateHistoryRequest().Source(source).Target(target).Length(length).Resolution(resolution).Unit(unit)
-	resp, err := req.Do(ctx)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
+	return req.Do(ctx)
 }
 
 type Rate struct {
