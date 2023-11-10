@@ -18,13 +18,15 @@ func main() {
 
 	fmt.Println(cost.String())
 
-	// rate history
-	rates, err := client.QueryRateHistory(ctx, "GBP", "USD", 10, wise.ResolutionHourly, wise.UnitDay)
+	rate, err := client.QueryRateLive(ctx, "GBP", "USD")
 	if err != nil {
 		panic(err)
 	}
+	fmt.Printf("%+v\n", rate)
 
-	for _, rate := range rates {
-		fmt.Printf("%+v\n", rate)
+	rates, err := client.QueryRateHistory(ctx, "GBP", "USD", 14, wise.ResolutionHourly, wise.UnitDay)
+	if err != nil {
+		panic(err)
 	}
+	fmt.Printf("len(rates) = %+v\n", len(rates))
 }
