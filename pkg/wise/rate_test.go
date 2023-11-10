@@ -20,7 +20,7 @@ func Test_QueryMidRate(t *testing.T) {
 	ctx := context.Background()
 	client := NewRestClient()
 	for _, c := range cases {
-		rate, err := client.QueryRateLive(ctx, c.source, c.target)
+		rate, err := client.QueryRate(ctx, c.source, c.target)
 		assert.NoError(t, err)
 		assert.Greater(t, rate.Value, 0.0)
 	}

@@ -21,9 +21,7 @@ func main() {
 	c := v1.NewRestClient()
 	c.Auth(token)
 
-	// from := time.Date(2022, 1, 1, 0, 0, 0, 0, time.UTC)
-	// to := time.Date(2022, 1, 2, 0, 0, 0, 0, time.UTC)
-	req := c.NewRateRequest().Source("GBP").Target("USD").From("2022-01-01").To("2022-01-02").Group(v1.GroupHour)
+	req := c.NewRatesRequest().Source("GBP").Target("USD").From("2022-01-01").To("2022-01-02").Group(v1.GroupHour)
 	ctx := context.Background()
 	rates, err := req.Do(ctx)
 	if err != nil {

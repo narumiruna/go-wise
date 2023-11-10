@@ -39,3 +39,13 @@ func (c *RestClient) NewAuthenticatedRequest(ctx context.Context, method, refURL
 	}
 	return req, nil
 }
+
+func (c *RestClient) QueryRate(ctx context.Context, source, target string) (*Rate, error) {
+	req := c.NewRatesLiveRequest().Source(source).Target(target)
+	return req.Do(ctx)
+}
+
+func (c *RestClient) QueryRateHistory(ctx context.Context, source, target string, length int, resolution Resolution, unit Unit) ([]Rate, error) {
+	req := c.NewRatesHistoryRequest().Source(source).Target(target).Length(length).Resolution(resolution).Unit(unit)
+	return req.Do(ctx)
+}

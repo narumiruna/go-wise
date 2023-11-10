@@ -1,8 +1,8 @@
-package wise
+package v1
 
 type Rate struct {
-	Source string  `json:"source"`
+	Rate   float64 `json:"rate"`
 	Target string  `json:"target"`
-	Value  float64 `json:"value"`
+	Source string  `json:"source"`
 	Time   Time    `json:"time"`
 }

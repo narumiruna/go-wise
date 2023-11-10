@@ -4,15 +4,8 @@ import (
 	"github.com/c9s/requestgen"
 )
 
-type Rate struct {
-	Rate   float64 `json:"rate"`
-	Target string  `json:"target"`
-	Source string  `json:"source"`
-	Time   Time    `json:"time"`
-}
-
-//go:generate requestgen -method GET -url "/v1/rates" -type RateRequest -responseType []Rate
-type RateRequest struct {
+//go:generate requestgen -method GET -url "/v1/rates" -type RatesRequest -responseType []Rate
+type RatesRequest struct {
 	client requestgen.AuthenticatedAPIClient
 
 	source string  `param:"source,query"`
@@ -23,8 +16,8 @@ type RateRequest struct {
 	group  *Group  `param:"group,query"`
 }
 
-func (c *RestClient) NewRateRequest() *RateRequest {
-	return &RateRequest{
+func (c *RestClient) NewRatesRequest() *RatesRequest {
+	return &RatesRequest{
 		client: c,
 	}
 }

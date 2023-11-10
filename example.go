@@ -15,10 +15,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Printf("%+v\n", cost)
 
-	fmt.Println(cost.String())
-
-	rate, err := client.QueryRateLive(ctx, "GBP", "USD")
+	rate, err := client.QueryRate(ctx, "GBP", "USD")
 	if err != nil {
 		panic(err)
 	}
