@@ -47,7 +47,7 @@ func (c *RestClient) NewCost(ctx context.Context, source string, amount float64,
 	cost := &Cost{
 		Price:         price,
 		quoteCurrency: defaultQuoteCurrency,
-		sourceRate:    rate,
+		sourceRate:    rate.Value,
 		cardFeeRate:   defaultCardFeeRate,
 		rewardRate:    defaultRewardRate,
 	}

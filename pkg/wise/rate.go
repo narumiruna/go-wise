@@ -20,13 +20,9 @@ func (c *RestClient) NewRateRequest() *RateLiveRequest {
 	}
 }
 
-func (c *RestClient) QueryRateLive(ctx context.Context, source, target string) (float64, error) {
+func (c *RestClient) QueryRateLive(ctx context.Context, source, target string) (*Rate, error) {
 	req := c.NewRateRequest().Source(source).Target(target)
-	resp, err := req.Do(ctx)
-	if err != nil {
-		return 0, err
-	}
-	return resp.Value, nil
+	return req.Do(ctx)
 }
 
 //go:generate requestgen -method GET -url "/rates/history" -type RateHistoryRequest -responseType []Rate
