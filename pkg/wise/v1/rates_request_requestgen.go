@@ -21,17 +21,17 @@ func (r *RatesRequest) Target(target string) *RatesRequest {
 	return r
 }
 
-func (r *RatesRequest) Time(time string) *RatesRequest {
+func (r *RatesRequest) Time(time Time) *RatesRequest {
 	r.time = &time
 	return r
 }
 
-func (r *RatesRequest) From(from string) *RatesRequest {
+func (r *RatesRequest) From(from Time) *RatesRequest {
 	r.from = &from
 	return r
 }
 
-func (r *RatesRequest) To(to string) *RatesRequest {
+func (r *RatesRequest) To(to Time) *RatesRequest {
 	r.to = &to
 	return r
 }
@@ -93,17 +93,6 @@ func (r *RatesRequest) GetParameters() (map[string]interface{}, error) {
 	// check group field -> json key group
 	if r.group != nil {
 		group := *r.group
-
-		// TEMPLATE check-valid-values
-		switch group {
-		case GroupMinute, GroupHour, GroupDay:
-			params["group"] = group
-
-		default:
-			return nil, fmt.Errorf("group value %v is invalid", group)
-
-		}
-		// END TEMPLATE check-valid-values
 
 		// assign parameter of group
 		params["group"] = group

@@ -8,12 +8,12 @@ import (
 type RatesRequest struct {
 	client requestgen.AuthenticatedAPIClient
 
-	source string  `param:"source"`
-	target string  `param:"target"`
-	time   *string `param:"time"`
-	from   *string `param:"from"`
-	to     *string `param:"to"`
-	group  *Group  `param:"group"`
+	source string `param:"source"`
+	target string `param:"target"`
+	time   *Time  `param:"time"`
+	from   *Time  `param:"from"`
+	to     *Time  `param:"to"`
+	group  *Group `param:"group"`
 }
 
 func (c *RestClient) NewRatesRequest() *RatesRequest {

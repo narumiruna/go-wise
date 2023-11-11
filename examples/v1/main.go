@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"os"
+	"time"
 
 	"github.com/joho/godotenv"
 	v1 "github.com/narumiruna/go-wise/pkg/wise/v1"
@@ -21,9 +22,9 @@ func main() {
 	c := v1.NewRestClient()
 	c.Auth(token)
 
-	req := c.NewRatesRequest().Source("GBP").Target("USD").From("2022-01-01").To("2022-01-02").Group(v1.GroupHour)
+	now := time.Now()
 	ctx := context.Background()
-	rates, err := req.Do(ctx)
+	rates, err := c.QueryRateHistory(ctx, "GBP", "USD", now.AddDate(0, 0, -1), now, v1.GroupHour)
 	if err != nil {
 		panic(err)
 	}

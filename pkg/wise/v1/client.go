@@ -52,3 +52,13 @@ func (c *RestClient) NewAuthenticatedRequest(ctx context.Context, method, refURL
 	}
 	return req, nil
 }
+
+func (c *RestClient) QueryRate(ctx context.Context, source string, target string) ([]Rate, error) {
+	req := c.NewRatesRequest().Source(source).Target(target)
+	return req.Do(ctx)
+}
+
+func (c *RestClient) QueryRateHistory(ctx context.Context, source string, target string, from time.Time, to time.Time, gorup Group) ([]Rate, error) {
+	req := c.NewRatesRequest().Source(source).Target(target).From(Time(from)).To(Time(to)).Group(gorup)
+	return req.Do(ctx)
+}
