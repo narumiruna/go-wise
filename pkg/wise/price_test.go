@@ -19,7 +19,7 @@ func Test_QueryPrice(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	client := NewRestClient()
+	client := NewClient()
 	for _, c := range cases {
 		prices, err := client.QueryPrice(ctx, c.source, c.amount, c.target)
 		assert.NoError(t, err)
