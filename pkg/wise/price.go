@@ -25,3 +25,14 @@ type AdditionalFeeDetails struct {
 	TaxDetailsByType interface{} `json:"taxDetailsByType"`
 	DynamicFxFee     interface{} `json:"dynamicFxFee"`
 }
+
+type PriceSlice []Price
+
+func (s PriceSlice) Find(payInMethod PayInMethod, payOutMethod PayOutMethod) (Price, bool) {
+	for _, p := range s {
+		if p.PayInMethod == payInMethod && p.PayOutMethod == payOutMethod {
+			return p, true
+		}
+	}
+	return Price{}, false
+}

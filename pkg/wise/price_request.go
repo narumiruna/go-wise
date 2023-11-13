@@ -4,7 +4,7 @@ import (
 	"github.com/c9s/requestgen"
 )
 
-//go:generate requestgen -method GET -url "/gateway/v1/price" -type PriceRequest -responseType []Price
+//go:generate requestgen -method GET -url "/gateway/v1/price" -type PriceRequest -responseType PriceSlice
 type PriceRequest struct {
 	client requestgen.AuthenticatedAPIClient
 

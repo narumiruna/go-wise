@@ -1,7 +1,6 @@
 package cost
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/narumiruna/go-wise/pkg/wise"
@@ -14,31 +13,18 @@ const (
 )
 
 type Cost struct {
-	*wise.Price
+	wise.Price
 
 	CardFeeRate float64
 	RewardRate  float64
 }
 
-func NewCost(ctx context.Context, source string, amount float64, target string) (*Cost, error) {
-	c := wise.NewClient()
-
-	prices, err := c.NewPriceService().QueryPrice(ctx, source, amount, target)
-	if err != nil {
-		return nil, err
-	}
-
-	price, err := findPrice(prices, wise.PayInMethodVisaCredit, wise.PayOutMethodBalance)
-	if err != nil {
-		return nil, err
-	}
-
-	cost := &Cost{
+func NewCost(price wise.Price) *Cost {
+	return &Cost{
 		Price:       price,
 		CardFeeRate: defaultCardFeeRate,
 		RewardRate:  defaultRewardRate,
 	}
-	return cost, nil
 }
 
 func (c *Cost) String() string {
