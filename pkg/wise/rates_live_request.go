@@ -12,7 +12,7 @@ type RatesLiveRequest struct {
 	target string `param:"target"`
 }
 
-func (c *RestClient) NewRatesLiveRequest() *RatesLiveRequest {
+func (c *Client) NewRatesLiveRequest() *RatesLiveRequest {
 	return &RatesLiveRequest{
 		client: c,
 	}

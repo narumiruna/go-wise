@@ -28,7 +28,7 @@ type Cost struct {
 	milePrice    float64
 }
 
-func (c *RestClient) NewCost(ctx context.Context, source string, amount float64, target string) (*Cost, error) {
+func (c *Client) NewCost(ctx context.Context, source string, amount float64, target string) (*Cost, error) {
 	prices, err := c.QueryPrice(ctx, source, amount, target)
 	if err != nil {
 		return nil, err

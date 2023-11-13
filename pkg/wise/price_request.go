@@ -18,7 +18,7 @@ type PriceRequest struct {
 	markers        *string  `param:"markers"`
 }
 
-func (c *RestClient) NewPriceRequest() *PriceRequest {
+func (c *Client) NewPriceRequest() *PriceRequest {
 	return &PriceRequest{
 		client: c,
 	}

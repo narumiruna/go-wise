@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	client := wise.NewRestClient()
+	client := wise.NewClient()
 	ctx := context.Background()
 
 	cost, err := client.NewCost(ctx, "GBP", 1000, "USD")

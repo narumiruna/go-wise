@@ -15,7 +15,7 @@ type RatesHistoryRequest struct {
 	unit       Unit       `param:"unit"`
 }
 
-func (c *RestClient) NewRatesHistoryRequest() *RatesHistoryRequest {
+func (c *Client) NewRatesHistoryRequest() *RatesHistoryRequest {
 	return &RatesHistoryRequest{
 		client: c,
 	}

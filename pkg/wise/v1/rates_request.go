@@ -16,7 +16,7 @@ type RatesRequest struct {
 	group  *Group `param:"group"`
 }
 
-func (c *RestClient) NewRatesRequest() *RatesRequest {
+func (c *Client) NewRatesRequest() *RatesRequest {
 	return &RatesRequest{
 		client: c,
 	}
