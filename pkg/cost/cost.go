@@ -38,7 +38,7 @@ func NewCost(ctx context.Context, source string, amount float64, target string) 
 		return nil, err
 	}
 
-	price, err := wise.FindPrice(prices, "VISA_CREDIT", "BALANCE")
+	price, err := wise.FindPrice(prices, wise.PayInMethodVisaCredit, wise.PayOutMethodBalance)
 	if err != nil {
 		return nil, err
 	}

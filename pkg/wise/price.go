@@ -4,8 +4,8 @@ type Price struct {
 	PriceSetID           int64                `json:"priceSetId"`
 	SourceAmount         float64              `json:"sourceAmount"`
 	TargetAmount         float64              `json:"targetAmount"`
-	PayInMethod          string               `json:"payInMethod"`
-	PayOutMethod         string               `json:"payOutMethod"`
+	PayInMethod          PayInMethod          `json:"payInMethod"`
+	PayOutMethod         PayOutMethod         `json:"payOutMethod"`
 	SourceCurrency       string               `json:"sourceCcy"`
 	TargetCurrency       string               `json:"targetCcy"`
 	Total                float64              `json:"total"`
