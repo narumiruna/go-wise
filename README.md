@@ -3,22 +3,28 @@
 ## Usage
 
 ```go
-client := wise.NewRestClient()
+client := wise.NewClient()
 ctx := context.Background()
 
-cost, err := client.NewCost(ctx, "GBP", 1000, "USD")
+prices, err := client.NewPriceService().QueryPrice(ctx, "GBP", 1000, "USD")
 if err != nil {
 	panic(err)
 }
+price, ok := prices.Find(wise.PayInMethodVisaCredit, wise.PayOutMethodBalance)
+if !ok {
+	panic("price not found")
+}
+
+cost := cost.NewCost(price)
 fmt.Printf("%+v\n", cost)
 
-rate, err := client.QueryRate(ctx, "GBP", "USD")
+rate, err := client.NewRatesService().QueryRate(ctx, "GBP", "USD")
 if err != nil {
 	panic(err)
 }
 fmt.Printf("%+v\n", rate)
 
-rates, err := client.QueryRateHistory(ctx, "GBP", "USD", 14, wise.ResolutionHourly, wise.UnitDay)
+rates, err := client.NewRatesService().QueryRateHistory(ctx, "GBP", "USD", 14, wise.ResolutionHourly, wise.UnitDay)
 if err != nil {
 	panic(err)
 }
