@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_QueryPrice(t *testing.T) {
+func Test_PriceService_QueryPrice(t *testing.T) {
 	cases := []struct {
 		source string
 		amount float64
@@ -24,12 +24,11 @@ func Test_QueryPrice(t *testing.T) {
 		prices, err := client.NewPriceService().QueryPrice(ctx, c.source, c.amount, c.target)
 		assert.NoError(t, err)
 
-		price, err := FindPrice(prices, "VISA_CREDIT", "BALANCE")
-		assert.NoError(t, err)
-
-		assert.IsType(t, &Price{}, price)
-		assert.Equal(t, c.target, price.TargetCurrency)
-		assert.Equal(t, c.source, price.SourceCurrency)
-		assert.Equal(t, c.amount, price.TargetAmount)
+		for _, price := range prices {
+			assert.IsType(t, Price{}, price)
+			assert.Equal(t, c.target, price.TargetCurrency)
+			assert.Equal(t, c.source, price.SourceCurrency)
+			assert.Equal(t, c.amount, price.TargetAmount)
+		}
 	}
 }
