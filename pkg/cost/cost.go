@@ -1,8 +1,10 @@
-package wise
+package cost
 
 import (
 	"context"
 	"fmt"
+
+	"github.com/narumiruna/go-wise/pkg/wise"
 )
 
 const (
@@ -12,7 +14,7 @@ const (
 )
 
 type Cost struct {
-	*Price
+	*wise.Price
 
 	quoteCurrency string
 	sourceRate    float64
@@ -28,18 +30,20 @@ type Cost struct {
 	milePrice    float64
 }
 
-func (c *Client) NewCost(ctx context.Context, source string, amount float64, target string) (*Cost, error) {
-	prices, err := c.QueryPrice(ctx, source, amount, target)
+func NewCost(ctx context.Context, source string, amount float64, target string) (*Cost, error) {
+	c := wise.NewClient()
+
+	prices, err := c.NewPriceService().QueryPrice(ctx, source, amount, target)
 	if err != nil {
 		return nil, err
 	}
 
-	price, err := findPrice(prices, "VISA_CREDIT", "BALANCE")
+	price, err := wise.FindPrice(prices, "VISA_CREDIT", "BALANCE")
 	if err != nil {
 		return nil, err
 	}
 
-	rate, err := c.QueryRate(ctx, price.SourceCurrency, defaultQuoteCurrency)
+	rate, err := c.NewRatesService().QueryRate(ctx, price.SourceCurrency, defaultQuoteCurrency)
 	if err != nil {
 		return nil, err
 	}

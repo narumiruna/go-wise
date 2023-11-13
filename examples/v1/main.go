@@ -19,12 +19,10 @@ func main() {
 
 	token := os.Getenv("WISE_TOKEN")
 
-	c := transferwise.NewRestClient()
-	c.Auth(token)
-
+	c := transferwise.NewClient(token)
 	now := time.Now()
 	ctx := context.Background()
-	rates, err := c.QueryRateHistory(ctx, "GBP", "USD", now.AddDate(0, 0, -1), now, transferwise.GroupHour)
+	rates, err := c.NewRateService().QueryRateHistory(ctx, "GBP", "USD", now.AddDate(0, 0, -1), now, transferwise.GroupHour)
 	if err != nil {
 		panic(err)
 	}

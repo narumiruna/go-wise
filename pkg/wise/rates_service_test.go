@@ -20,7 +20,7 @@ func Test_QueryRate(t *testing.T) {
 	ctx := context.Background()
 	client := NewClient()
 	for _, c := range cases {
-		rate, err := client.QueryRate(ctx, c.source, c.target)
+		rate, err := client.NewRatesService().QueryRate(ctx, c.source, c.target)
 		assert.NoError(t, err)
 		assert.Greater(t, rate.Value, 0.0)
 	}
