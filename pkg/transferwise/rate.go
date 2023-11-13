@@ -1,4 +1,4 @@
-package v1
+package transferwise
 
 type Rate struct {
 	Rate   float64 `json:"rate"`

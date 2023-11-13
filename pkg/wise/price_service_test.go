@@ -21,10 +21,10 @@ func Test_QueryPrice(t *testing.T) {
 	ctx := context.Background()
 	client := NewClient()
 	for _, c := range cases {
-		prices, err := client.QueryPrice(ctx, c.source, c.amount, c.target)
+		prices, err := client.NewPriceService().QueryPrice(ctx, c.source, c.amount, c.target)
 		assert.NoError(t, err)
 
-		price, err := findPrice(prices, "VISA_CREDIT", "BALANCE")
+		price, err := FindPrice(prices, "VISA_CREDIT", "BALANCE")
 		assert.NoError(t, err)
 
 		assert.IsType(t, &Price{}, price)
