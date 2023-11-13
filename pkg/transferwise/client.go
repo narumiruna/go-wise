@@ -12,6 +12,7 @@ import (
 const (
 	defaultHTTPTimeout = time.Second * 15
 	defaultBaseURL     = "https://api.transferwise.com"
+	sandboxBaseURL     = "https://api.sandbox.transferwise.tech"
 )
 
 type Client struct {
@@ -20,8 +21,8 @@ type Client struct {
 	token string
 }
 
-func NewClient(token string) *Client {
-	u, err := url.Parse(defaultBaseURL)
+func newClient(rawURL, token string) *Client {
+	u, err := url.Parse(rawURL)
 	if err != nil {
 		panic(err)
 	}
@@ -35,6 +36,14 @@ func NewClient(token string) *Client {
 		},
 		token: token,
 	}
+}
+
+func NewClient(token string) *Client {
+	return newClient(defaultBaseURL, token)
+}
+
+func NewSandBoxClient(token string) *Client {
+	return newClient(sandboxBaseURL, token)
 }
 
 func (c *Client) NewAuthenticatedRequest(ctx context.Context, method, refURL string, params url.Values, payload interface{}) (*http.Request, error) {
