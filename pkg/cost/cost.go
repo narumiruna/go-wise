@@ -32,12 +32,12 @@ func (c *Cost) String() string {
 	wiseFeeRate := c.Total / c.SourceAmount
 	totalFee := c.Total + cardFee
 	totalFeeRate := totalFee / c.SourceAmount
-	milePrice := totalFee / (c.SourceAmount * c.RewardRate)
+	costPerMile := totalFee / (c.SourceAmount * c.RewardRate)
 
 	s := fmt.Sprintf("Add %.2f %s", c.TargetAmount, c.TargetCurrency)
 	s += fmt.Sprintf(", pay with %.2f %s", c.SourceAmount, c.SourceCurrency)
 	s += fmt.Sprintf(", wise fee: %.2f %s (%.2f%%)", c.Total, c.SourceCurrency, wiseFeeRate*100)
 	s += fmt.Sprintf(", total fee: %.2f %s (%.2f%%)", totalFee, c.SourceCurrency, totalFeeRate*100)
-	s += fmt.Sprintf(", cost per mile: %.4f", milePrice)
+	s += fmt.Sprintf(", cost per mile: %.4f", costPerMile)
 	return s
 }
