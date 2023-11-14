@@ -22,7 +22,7 @@ func main() {
 	c := transferwise.NewClient(token)
 	now := time.Now()
 	ctx := context.Background()
-	rates, err := c.NewRateService().QueryRatesHistory(ctx, "GBP", "USD", now.AddDate(0, 0, -1), now, transferwise.GroupHour)
+	rates, err := c.NewRateService().QueryRateHistory(ctx, "GBP", "USD", now.AddDate(0, 0, -1), now, transferwise.GroupHour)
 	if err != nil {
 		panic(err)
 	}

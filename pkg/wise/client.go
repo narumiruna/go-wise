@@ -48,8 +48,8 @@ func (c *Client) NewPriceService() *PriceService {
 	}
 }
 
-func (c *Client) NewRatesService() *RatesService {
-	return &RatesService{
+func (c *Client) NewRatesService() *RateService {
+	return &RateService{
 		client: c,
 	}
 }

@@ -35,4 +35,12 @@ func main() {
 		panic(err)
 	}
 	fmt.Printf("len(rates) = %+v\n", len(rates))
+
+	currencies, err := client.NewCurrencyRequest().Do(ctx)
+	if err != nil {
+		panic(err)
+	}
+	for _, currency := range currencies {
+		fmt.Printf("code: %s, symbol: %s, name: %s\n", currency.Code, currency.Symbol, currency.Name)
+	}
 }
