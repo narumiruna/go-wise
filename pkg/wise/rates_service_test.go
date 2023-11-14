@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_NewRatesService_QueryRate(t *testing.T) {
+func Test_RatesService_QueryRate(t *testing.T) {
 	cases := []struct {
 		source string
 		target string
@@ -30,7 +30,7 @@ func Test_NewRatesService_QueryRate(t *testing.T) {
 	}
 }
 
-func Test_NewRatesService_QueryRateHistory(t *testing.T) {
+func Test_RatesService_QueryRateHistory(t *testing.T) {
 	cases := []struct {
 		source     string
 		target     string
