@@ -58,8 +58,8 @@ func (c *Client) NewAuthenticatedRequest(ctx context.Context, method, refURL str
 	return req, nil
 }
 
-func (c *Client) NewRateService() *RateService {
-	return &RateService{
+func (c *Client) NewRateService() *Service {
+	return &Service{
 		client: c,
 	}
 }

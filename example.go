@@ -9,10 +9,11 @@ import (
 )
 
 func main() {
-	client := wise.NewClient()
+	client := wise.NewClient("")
 	ctx := context.Background()
+	service := client.NewService()
 
-	prices, err := client.NewPriceService().QueryPrice(ctx, "GBP", 1000, "USD")
+	prices, err := service.QueryPrice(ctx, "GBP", 1000, "USD")
 	if err != nil {
 		panic(err)
 	}
@@ -24,32 +25,29 @@ func main() {
 	cost := cost.NewCost(price)
 	fmt.Printf("%+v\n", cost)
 
-	rate, err := client.NewRatesService().QueryRate(ctx, "GBP", "USD")
+	rate, err := service.QueryRate(ctx, "GBP", "USD")
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("%+v\n", rate)
 
-	rates, err := client.NewRatesService().QueryRateHistory(ctx, "GBP", "USD", 14, wise.ResolutionHourly, wise.UnitDay)
+	rates, err := service.QueryRateHistory(ctx, "GBP", "USD", 14, wise.ResolutionHourly, wise.UnitDay)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("len(rates) = %+v\n", len(rates))
 
-	// currencies, err := client.NewCurrencyRequest().Do(ctx)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// for _, currency := range currencies {
-	// 	fmt.Printf("code: %s, symbol: %s, name: %s\n", currency.Code, currency.Symbol, currency.Name)
-	// }
+	currencies, err := service.QueryCurrency(ctx)
+	if err != nil {
+		panic(err)
+	}
+	for _, currency := range currencies {
+		fmt.Printf("code: %s, symbol: %s, name: %s\n", currency.Code, currency.Symbol, currency.Name)
+	}
 
-	quotes, err := client.NewQuoteService().QueryQuote(ctx, "GBP", "USD", 0, 1000)
+	quotes, err := service.QueryQuote(ctx, "GBP", "USD", 0, 1000)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("%+v\n", quotes)
-	// for _, q := range quotes {
-	// 	fmt.Printf("%+v\n", q)
-	// }
 }

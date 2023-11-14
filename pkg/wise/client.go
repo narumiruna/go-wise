@@ -16,9 +16,11 @@ const (
 
 type Client struct {
 	requestgen.BaseAPIClient
+
+	token string
 }
 
-func NewClient() *Client {
+func NewClient(token string) *Client {
 	u, err := url.Parse(defaultBaseURL)
 	if err != nil {
 		panic(err)
@@ -31,6 +33,7 @@ func NewClient() *Client {
 				Timeout: defaultHTTPTimeout,
 			},
 		},
+		token: token,
 	}
 }
 
@@ -41,17 +44,9 @@ func (c *Client) NewAuthenticatedRequest(ctx context.Context, method, refURL str
 	}
 
 	req.Header.Add("Content-Type", "application/json")
+
+	if c.token != "" {
+		req.Header.Add("Authorization", "Bearer "+c.token)
+	}
 	return req, nil
-}
-
-func (c *Client) NewPriceService() *PriceService {
-	return &PriceService{
-		client: c,
-	}
-}
-
-func (c *Client) NewRatesService() *RateService {
-	return &RateService{
-		client: c,
-	}
 }
