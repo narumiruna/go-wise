@@ -36,11 +36,20 @@ func main() {
 	}
 	fmt.Printf("len(rates) = %+v\n", len(rates))
 
-	currencies, err := client.NewCurrencyRequest().Do(ctx)
+	// currencies, err := client.NewCurrencyRequest().Do(ctx)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// for _, currency := range currencies {
+	// 	fmt.Printf("code: %s, symbol: %s, name: %s\n", currency.Code, currency.Symbol, currency.Name)
+	// }
+
+	quotes, err := client.NewQuoteService().QueryQuote(ctx, "GBP", "USD", 0, 1000)
 	if err != nil {
 		panic(err)
 	}
-	for _, currency := range currencies {
-		fmt.Printf("code: %s, symbol: %s, name: %s\n", currency.Code, currency.Symbol, currency.Name)
-	}
+	fmt.Printf("%+v\n", quotes)
+	// for _, q := range quotes {
+	// 	fmt.Printf("%+v\n", q)
+	// }
 }

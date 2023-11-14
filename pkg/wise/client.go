@@ -39,6 +39,8 @@ func (c *Client) NewAuthenticatedRequest(ctx context.Context, method, refURL str
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", "application/json")
 	return req, nil
 }
 
