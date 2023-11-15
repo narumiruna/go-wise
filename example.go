@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/narumiruna/go-wise/pkg/cost"
 	"github.com/narumiruna/go-wise/pkg/wise"
 )
 
@@ -22,7 +21,7 @@ func main() {
 		panic("price not found")
 	}
 
-	cost := cost.NewCost(price)
+	cost := wise.NewCost(price)
 	fmt.Printf("%+v\n", cost)
 
 	rate, err := service.QueryRate(ctx, "GBP", "USD")

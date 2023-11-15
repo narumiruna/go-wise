@@ -1,9 +1,7 @@
-package cost
+package wise
 
 import (
 	"fmt"
-
-	"github.com/narumiruna/go-wise/pkg/wise"
 )
 
 const (
@@ -13,13 +11,13 @@ const (
 )
 
 type Cost struct {
-	wise.Price
+	Price
 
 	CardFeeRate float64
 	RewardRate  float64
 }
 
-func NewCost(price wise.Price) *Cost {
+func NewCost(price Price) *Cost {
 	return &Cost{
 		Price:       price,
 		CardFeeRate: defaultCardFeeRate,
