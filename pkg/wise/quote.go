@@ -92,7 +92,7 @@ type PaymentOptions struct {
 }
 
 type Notices struct {
-	Text string `json:"text"`
-	Link any    `json:"link"`
-	Type string `json:"type"`
+	Text string      `json:"text"`
+	Link interface{} `json:"link"`
+	Type string      `json:"type"`
 }
