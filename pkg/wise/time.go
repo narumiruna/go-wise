@@ -7,6 +7,10 @@ import (
 
 type Time time.Time
 
+func (t Time) Time() time.Time {
+	return time.Time(t)
+}
+
 func (t Time) String() string {
 	return time.Time(t).String()
 }
