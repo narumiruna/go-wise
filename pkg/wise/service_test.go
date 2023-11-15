@@ -19,7 +19,7 @@ func Test_Service_QueryPrice(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	client := NewClient("")
+	client := NewClient()
 	for _, c := range cases {
 		prices, err := client.NewService().QueryPrice(ctx, c.source, c.amount, c.target)
 		assert.NoError(t, err)
@@ -44,7 +44,7 @@ func Test_Service_QueryRate(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	client := NewClient("")
+	client := NewClient()
 	for _, c := range cases {
 		rate, err := client.NewService().QueryRate(ctx, c.source, c.target)
 		assert.NoError(t, err)
@@ -70,7 +70,7 @@ func Test_Service_QueryRateHistory(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	client := NewClient("")
+	client := NewClient()
 	for _, c := range cases {
 		rates, err := client.NewService().QueryRateHistory(ctx, c.source, c.target, c.length, c.resolution, c.unit)
 		assert.NoError(t, err)

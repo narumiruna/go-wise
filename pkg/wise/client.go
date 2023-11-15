@@ -20,7 +20,23 @@ type Client struct {
 	token string
 }
 
-func NewClient(token string) *Client {
+func NewClient() *Client {
+	u, err := url.Parse(defaultBaseURL)
+	if err != nil {
+		panic(err)
+	}
+
+	return &Client{
+		BaseAPIClient: requestgen.BaseAPIClient{
+			BaseURL: u,
+			HttpClient: &http.Client{
+				Timeout: defaultHTTPTimeout,
+			},
+		},
+	}
+}
+
+func NewAuthClient(token string) *Client {
 	u, err := url.Parse(defaultBaseURL)
 	if err != nil {
 		panic(err)

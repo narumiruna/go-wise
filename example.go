@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	client := wise.NewClient("")
+	client := wise.NewClient()
 	ctx := context.Background()
 	service := client.NewService()
 
