@@ -16,12 +16,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	price, ok := prices.Find(wise.PayInMethodVisaCredit, wise.PayOutMethodBalance)
-	if !ok {
-		panic("price not found")
+	for _, price := range prices {
+		fmt.Printf("%+v\n", price)
 	}
 
-	cost := wise.NewCost(price)
+	cost, err := service.NewCost(ctx, "GBP", 1000, "USD")
+	if err != nil {
+		panic(err)
+	}
 	fmt.Printf("%+v\n", cost)
 
 	rate, err := service.QueryRate(ctx, "GBP", "USD")

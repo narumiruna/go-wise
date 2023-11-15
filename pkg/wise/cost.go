@@ -17,9 +17,9 @@ type Cost struct {
 	RewardRate  float64
 }
 
-func NewCost(price Price) *Cost {
+func NewCost(p Price) *Cost {
 	return &Cost{
-		Price:       price,
+		Price:       p,
 		CardFeeRate: defaultCardFeeRate,
 		RewardRate:  defaultRewardRate,
 	}

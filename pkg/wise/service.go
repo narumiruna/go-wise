@@ -1,6 +1,8 @@
 package wise
 
-import "context"
+import (
+	"context"
+)
 
 type Service struct {
 	client *Client
@@ -12,7 +14,21 @@ func (c *Client) NewService() *Service {
 	}
 }
 
-func (s *Service) QueryPrice(ctx context.Context, source string, amount float64, target string) (PriceSlice, error) {
+func (s *Service) NewCost(ctx context.Context, source string, amount float64, target string) (*Cost, error) {
+	prices, err := s.QueryPrice(ctx, source, amount, target)
+	if err != nil {
+		return nil, err
+	}
+
+	price, err := FindPriceByMethod(prices, PayInMethodVisaCredit, PayOutMethodBalance)
+	if err != nil {
+		return nil, err
+	}
+
+	return NewCost(price), err
+}
+
+func (s *Service) QueryPrice(ctx context.Context, source string, amount float64, target string) ([]Price, error) {
 	req := s.client.NewPriceRequest().SourceCurrency(source).TargetAmount(amount).TargetCurrency(target)
 	return req.Do(ctx)
 }
