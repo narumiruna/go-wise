@@ -24,7 +24,7 @@ func Test_Service_NewCost(t *testing.T) {
 		cost, err := s.NewCost(ctx, c.source, c.amount, c.target)
 		assert.NoError(t, err)
 
-		assert.IsType(t, Cost{}, cost)
+		assert.IsType(t, &Cost{}, cost)
 		assert.Equal(t, c.target, cost.TargetCurrency)
 		assert.Equal(t, c.source, cost.SourceCurrency)
 		assert.Equal(t, c.amount, cost.TargetAmount)
