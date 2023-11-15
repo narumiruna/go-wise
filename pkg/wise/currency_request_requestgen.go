@@ -109,13 +109,21 @@ func (c *CurrencyRequest) GetSlugsMap() (map[string]string, error) {
 	return slugs, nil
 }
 
+// GetPath returns the request path of the API
+func (c *CurrencyRequest) GetPath() string {
+	return "/gateway/v1/currencies"
+}
+
+// Do generates the request object and send the request object to the API endpoint
 func (c *CurrencyRequest) Do(ctx context.Context) ([]Currency, error) {
 
 	// no body params
 	var params interface{}
 	query := url.Values{}
 
-	apiURL := "/gateway/v1/currencies"
+	var apiURL string
+
+	apiURL = c.GetPath()
 
 	req, err := c.client.NewAuthenticatedRequest(ctx, "GET", apiURL, query, params)
 	if err != nil {
@@ -130,6 +138,16 @@ func (c *CurrencyRequest) Do(ctx context.Context) ([]Currency, error) {
 	var apiResponse []Currency
 	if err := response.DecodeJSON(&apiResponse); err != nil {
 		return nil, err
+	}
+
+	type responseValidator interface {
+		Validate() error
+	}
+	validator, ok := interface{}(apiResponse).(responseValidator)
+	if ok {
+		if err := validator.Validate(); err != nil {
+			return nil, err
+		}
 	}
 	return apiResponse, nil
 }

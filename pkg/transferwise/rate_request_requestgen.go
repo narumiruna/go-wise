@@ -181,6 +181,12 @@ func (r *RateRequest) GetSlugsMap() (map[string]string, error) {
 	return slugs, nil
 }
 
+// GetPath returns the request path of the API
+func (r *RateRequest) GetPath() string {
+	return "/v1/rates"
+}
+
+// Do generates the request object and send the request object to the API endpoint
 func (r *RateRequest) Do(ctx context.Context) ([]Rate, error) {
 
 	// empty params for GET operation
@@ -190,7 +196,9 @@ func (r *RateRequest) Do(ctx context.Context) ([]Rate, error) {
 		return nil, err
 	}
 
-	apiURL := "/v1/rates"
+	var apiURL string
+
+	apiURL = r.GetPath()
 
 	req, err := r.client.NewAuthenticatedRequest(ctx, "GET", apiURL, query, params)
 	if err != nil {
@@ -205,6 +213,16 @@ func (r *RateRequest) Do(ctx context.Context) ([]Rate, error) {
 	var apiResponse []Rate
 	if err := response.DecodeJSON(&apiResponse); err != nil {
 		return nil, err
+	}
+
+	type responseValidator interface {
+		Validate() error
+	}
+	validator, ok := interface{}(apiResponse).(responseValidator)
+	if ok {
+		if err := validator.Validate(); err != nil {
+			return nil, err
+		}
 	}
 	return apiResponse, nil
 }

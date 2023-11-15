@@ -207,6 +207,12 @@ func (p *PriceRequest) GetSlugsMap() (map[string]string, error) {
 	return slugs, nil
 }
 
+// GetPath returns the request path of the API
+func (p *PriceRequest) GetPath() string {
+	return "/gateway/v1/price"
+}
+
+// Do generates the request object and send the request object to the API endpoint
 func (p *PriceRequest) Do(ctx context.Context) (PriceSlice, error) {
 
 	// empty params for GET operation
@@ -216,7 +222,9 @@ func (p *PriceRequest) Do(ctx context.Context) (PriceSlice, error) {
 		return nil, err
 	}
 
-	apiURL := "/gateway/v1/price"
+	var apiURL string
+
+	apiURL = p.GetPath()
 
 	req, err := p.client.NewAuthenticatedRequest(ctx, "GET", apiURL, query, params)
 	if err != nil {
@@ -231,6 +239,16 @@ func (p *PriceRequest) Do(ctx context.Context) (PriceSlice, error) {
 	var apiResponse PriceSlice
 	if err := response.DecodeJSON(&apiResponse); err != nil {
 		return nil, err
+	}
+
+	type responseValidator interface {
+		Validate() error
+	}
+	validator, ok := interface{}(apiResponse).(responseValidator)
+	if ok {
+		if err := validator.Validate(); err != nil {
+			return nil, err
+		}
 	}
 	return apiResponse, nil
 }

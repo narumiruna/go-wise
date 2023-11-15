@@ -155,6 +155,12 @@ func (q *QuoteRequest) GetSlugsMap() (map[string]string, error) {
 	return slugs, nil
 }
 
+// GetPath returns the request path of the API
+func (q *QuoteRequest) GetPath() string {
+	return "/gateway/v3/quotes"
+}
+
+// Do generates the request object and send the request object to the API endpoint
 func (q *QuoteRequest) Do(ctx context.Context) (*Quote, error) {
 
 	params, err := q.GetParameters()
@@ -163,7 +169,9 @@ func (q *QuoteRequest) Do(ctx context.Context) (*Quote, error) {
 	}
 	query := url.Values{}
 
-	apiURL := "/gateway/v3/quotes"
+	var apiURL string
+
+	apiURL = q.GetPath()
 
 	req, err := q.client.NewAuthenticatedRequest(ctx, "POST", apiURL, query, params)
 	if err != nil {
@@ -178,6 +186,16 @@ func (q *QuoteRequest) Do(ctx context.Context) (*Quote, error) {
 	var apiResponse Quote
 	if err := response.DecodeJSON(&apiResponse); err != nil {
 		return nil, err
+	}
+
+	type responseValidator interface {
+		Validate() error
+	}
+	validator, ok := interface{}(apiResponse).(responseValidator)
+	if ok {
+		if err := validator.Validate(); err != nil {
+			return nil, err
+		}
 	}
 	return &apiResponse, nil
 }
